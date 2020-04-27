@@ -24,6 +24,7 @@ Kruskal::node* Kruskal::findMST(string* nodeVertices, double** weights, int numO
 void Kruskal::makeSet(const string& word)
 {
 	node* newNode = new node();
+
 	newNode->word = word;
 
 	if (head == nullptr)
@@ -51,8 +52,10 @@ Kruskal::node* Kruskal::findSet(const string& word)
 			{
 				return p;
 			}
+
 			q = q->nextNeighbor;
 		}
+
 		p = p->nextVertex;
 	}
 
@@ -71,6 +74,7 @@ void Kruskal::setUnion(node* u, node* v)
 	p->nextNeighbor = v;
 	
 	node* q = head;
+
 	while (q->nextVertex != nullptr)
 	{
 		if (q->nextVertex == v)
@@ -78,7 +82,13 @@ void Kruskal::setUnion(node* u, node* v)
 			q->nextVertex = v->nextVertex;
 			break;
 		}
+
 		q = q->nextVertex;
+	}
+
+	if (head == v)
+	{
+		head = v->nextVertex;
 	}
 
 	v->nextVertex = nullptr;
