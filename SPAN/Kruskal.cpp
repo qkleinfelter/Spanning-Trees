@@ -60,4 +60,24 @@ Kruskal::nodeList* Kruskal::findSet(char word[WORD_SIZE])
 
 void Kruskal::setUnion(nodeList* u, nodeList* v)
 {
+	node* p = u->head;
+
+	while (p->next != nullptr)
+	{
+		p = p->next;
+	}
+
+	p->next = v->head;
+
+	if (v->prev != nullptr)
+	{
+		v->prev->next = v->next;
+	}
+
+	if (v->next != nullptr)
+	{
+		v->next->prev = v->prev;
+	}
+
+	delete v;
 }
