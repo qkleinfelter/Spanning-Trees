@@ -1,5 +1,6 @@
 #include "Kruskal.h";
 #include <string>;
+#include <iostream>
 
 Kruskal::Kruskal()
 {
@@ -10,15 +11,58 @@ Kruskal::~Kruskal()
 {
 }
 
-Kruskal::node* Kruskal::findMST(string* nodeVertices, double** weights, int numOfNodes)
+void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 {
-	node* a = nullptr;
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		makeSet(nodeVertices[i]);
+	}
+
+	edge* edges = new edge[numOfNodes * numOfNodes];
+	int currEdge = 0;
+
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		for (int j = 0; j < numOfNodes; j++)
+		{
+			double currWeight = adjMatrix[i][j];
+
+			if (currWeight != 0)
+			{
+				edge p;
+
+				p.src = i;
+				p.dest = j;
+
+				p.weight = currWeight;
+
+				edges[currEdge] = p;
+
+				currEdge++;
+			}
+		}
+	}
 	// Sort the list of edges in increasing order by weight
-	// for each edge 
-		// if findSet(u) != findSet(v)
-			// a = union of u & v
-			// setUnion(u,v)
-	// return A
+	insertionSort(edges, currEdge);
+
+	double totalWeight = 0;
+
+	for (int i = 0; i < currEdge; i++)
+	{
+		edge& p = edges[i];
+		
+		node* srcContainer = findSet(nodeVertices[p.src]);
+		node* destContainer = findSet(nodeVertices[p.dest]);
+
+		if (srcContainer != destContainer)
+		{
+			setUnion(srcContainer, destContainer);
+			cout << "Merging " << srcContainer->word << " and " << destContainer->word << endl;
+			totalWeight += p.weight;
+		}
+	}
+
+	delete[] edges;
 }
 
 void Kruskal::makeSet(const string& word)

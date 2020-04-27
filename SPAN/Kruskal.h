@@ -26,7 +26,7 @@ public:
 	Kruskal();
 	~Kruskal();
 
-	node* findMST(string* nodeVertices, double** weights, int numOfNodes);
+	void findMST(string* nodeVertices, double** adjMatrix, int numOfNodes);
 	void makeSet(const string& word);
 	node* findSet(const string& word);
 	void setUnion(node* u, node* v);
