@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 using namespace std;
 
 class Kruskal
@@ -12,22 +13,22 @@ private:
 		node* nextVertex = nullptr;
 	};
 
-	struct path
+	struct edge
 	{
-		node* left = nullptr;
-		node* right = nullptr;
-		double weight = 0;
+		unsigned int src;
+		unsigned int dest;
+		double weight;
 	};
 
 	node* head = nullptr;
-
+	void insertionSort(edge arr[], int n);
 public:
 	Kruskal();
 	~Kruskal();
 
 	node* findMST(string* nodeVertices, double** weights, int numOfNodes);
-	void makeSet(string word);
-	node* findSet(string word);
+	void makeSet(const string& word);
+	node* findSet(const string& word);
 	void setUnion(node* u, node* v);
 
 };
