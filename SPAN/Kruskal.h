@@ -16,11 +16,12 @@ private:
 		nodeList* next = nullptr;
 	};
 	nodeList* head = nullptr;
+
 public:
 	Kruskal();
 	~Kruskal();
 
-	nodeList* findMST(nodeList* g, node* w);
+	nodeList* findMST(double w);
 	void makeSet(char word[WORD_SIZE]);
 	nodeList* findSet(char word[WORD_SIZE]);
 	void setUnion(nodeList* u, nodeList* v);

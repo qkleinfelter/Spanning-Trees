@@ -10,9 +10,15 @@ Kruskal::~Kruskal()
 {
 }
 
-Kruskal::nodeList* Kruskal::findMST(nodeList* g, node* w)
+Kruskal::nodeList* Kruskal::findMST(double w)
 {
-	return nullptr;
+	nodeList* a = nullptr;
+	// Sort the list of edges in increasing order by weight
+	// for each edge 
+		// if findSet(u) != findSet(v)
+			// a = union of u & v
+			// setUnion(u,v)
+	// return A
 }
 
 void Kruskal::makeSet(char word[WORD_SIZE])

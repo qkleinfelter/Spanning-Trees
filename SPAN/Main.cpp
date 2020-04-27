@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include "Kruskal.h"
 
 using namespace std;
 
@@ -15,12 +16,15 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	readGraphFile(argv[1]);
+	Kruskal* kruskalGraph = new Kruskal();
 
+	readGraphFile(argv[1], kruskalGraph);
+
+	delete kruskalGraph;
 	return 0;
 }
 
-void readGraphFile(string graphPath)
+void readGraphFile(string graphPath, Kruskal* kGraph)
 {
 	ifstream inputStream;
 	
@@ -45,6 +49,8 @@ void readGraphFile(string graphPath)
 		inputStream >> nodeId;
 
 		cout << "Creating node " << nodeId << " now." << endl;
+
+		kGraph->makeSet(nodeId);
 	}
 
 	double weight;
