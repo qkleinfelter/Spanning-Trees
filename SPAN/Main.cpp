@@ -16,15 +16,12 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	Kruskal* kruskalGraph = new Kruskal();
+	readGraphFile(argv[1]);
 
-	readGraphFile(argv[1], kruskalGraph);
-
-	delete kruskalGraph;
 	return 0;
 }
 
-void readGraphFile(string graphPath, Kruskal* kGraph)
+void readGraphFile(string graphPath)
 {
 	ifstream inputStream;
 	
@@ -42,28 +39,26 @@ void readGraphFile(string graphPath, Kruskal* kGraph)
 
 	cout << "Creating " << numOfNodes << " nodes for the graph";
 
-	char nodeId[2];
+	char* nodeVertices = new char[numOfNodes];
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
-		inputStream >> nodeId;
+		inputStream >> nodeVertices[i];
 
-		cout << "Creating node " << nodeId << " now." << endl;
-
-		kGraph->makeSet(nodeId);
+		cout << "Creating node " << nodeVertices[i] << " now." << endl;
 	}
 
-	double weight;
+	double** weights = new double*[numOfNodes];
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		weights[i] = new double[numOfNodes];
+	}
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
-		cout << "Adjacency list for the " << i << "th node from the file" << endl;
-
 		for (int j = 0; j < numOfNodes; j++)
 		{
-			inputStream >> weight;
-			
-			cout << "Node i has a path of weight " << weight << " to node j" << endl;
+			inputStream >> weights[i][j];	
 		}
 	}
 

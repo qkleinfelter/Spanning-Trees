@@ -7,9 +7,15 @@ private:
 	struct node
 	{
 		char word[WORD_SIZE];
-		double weight;
 		node* nextNeighbor = nullptr;
 		node* nextVertex = nullptr;
+	};
+
+	struct path
+	{
+		node* left = nullptr;
+		node* right = nullptr;
+		double weight = 0;
 	};
 
 	node* head = nullptr;
