@@ -39,16 +39,16 @@ void readGraphFile(string graphPath)
 
 	cout << "Creating " << numOfNodes << " nodes for the graph";
 
-	char* nodeVertices = new char[numOfNodes];
+	string* nodeVertices = new string[numOfNodes];
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
 		inputStream >> nodeVertices[i];
-
-		cout << "Creating node " << nodeVertices[i] << " now." << endl;
+		cout << "Node Name: " << nodeVertices[i] << endl;
 	}
 
 	double** weights = new double*[numOfNodes];
+
 	for (int i = 0; i < numOfNodes; i++)
 	{
 		weights[i] = new double[numOfNodes];
@@ -59,8 +59,24 @@ void readGraphFile(string graphPath)
 		for (int j = 0; j < numOfNodes; j++)
 		{
 			inputStream >> weights[i][j];	
+
+			cout << weights[i][j] << " ";
 		}
+		cout << endl;
 	}
+
+	Kruskal kruskal;
+	
+	kruskal.findMST(nodeVertices, weights, numOfNodes);
+
+	delete[] nodeVertices;
+
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		delete[] weights[i];
+	}
+	
+	delete[] weights;
 
 	inputStream.close();
 }

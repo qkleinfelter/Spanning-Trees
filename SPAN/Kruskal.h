@@ -1,12 +1,12 @@
 #pragma once
+using namespace std;
 
 class Kruskal
 {
 private:
-	static const unsigned int WORD_SIZE = 2;
 	struct node
 	{
-		char word[WORD_SIZE];
+		string word;
 		node* nextNeighbor = nullptr;
 		node* nextVertex = nullptr;
 	};
@@ -24,9 +24,9 @@ public:
 	Kruskal();
 	~Kruskal();
 
-	node* findMST();
-	void makeSet(char word[WORD_SIZE]);
-	node* findSet(char word[WORD_SIZE]);
+	node* findMST(string* nodeVertices, double** weights, int numOfNodes);
+	void makeSet(string word);
+	node* findSet(string word);
 	void setUnion(node* u, node* v);
 
 };

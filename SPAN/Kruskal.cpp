@@ -10,7 +10,7 @@ Kruskal::~Kruskal()
 {
 }
 
-Kruskal::node* Kruskal::findMST()
+Kruskal::node* Kruskal::findMST(string* nodeVertices, double** weights, int numOfNodes)
 {
 	node* a = nullptr;
 	// Sort the list of edges in increasing order by weight
@@ -21,10 +21,10 @@ Kruskal::node* Kruskal::findMST()
 	// return A
 }
 
-void Kruskal::makeSet(char word[WORD_SIZE])
+void Kruskal::makeSet(string word)
 {
 	node* newNode = new node();
-	strcpy(newNode->word, word);
+	newNode->word = word;
 
 	if (head == nullptr)
 	{
@@ -37,7 +37,7 @@ void Kruskal::makeSet(char word[WORD_SIZE])
 	head = newNode;
 }
 
-Kruskal::node* Kruskal::findSet(char word[WORD_SIZE])
+Kruskal::node* Kruskal::findSet(string word)
 {
 	node* p = head;
 
@@ -47,7 +47,7 @@ Kruskal::node* Kruskal::findSet(char word[WORD_SIZE])
 
 		while (q != nullptr)
 		{
-			if (strcmp(q->word, word) == 0)
+			if (q->word == word)
 			{
 				return p;
 			}
