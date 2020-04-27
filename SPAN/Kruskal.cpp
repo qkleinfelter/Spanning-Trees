@@ -38,6 +38,23 @@ void Kruskal::makeSet(char word[WORD_SIZE])
 
 Kruskal::nodeList* Kruskal::findSet(char word[WORD_SIZE])
 {
+	nodeList* p = head;
+
+	while (p != nullptr)
+	{
+		node* q = p->head;
+
+		while (q != nullptr)
+		{
+			if (strcmp(q->word, word) == 0)
+			{
+				return p;
+			}
+			q = q->next;
+		}
+		p = p->next;
+	}
+
 	return nullptr;
 }
 
