@@ -57,12 +57,29 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 		if (srcContainer != destContainer)
 		{
 			setUnion(srcContainer, destContainer);
-			cout << "Merging " << srcContainer->word << " and " << destContainer->word << endl;
+			//cout << "Merging " << srcContainer->word << " and " << destContainer->word << endl;
 			totalWeight += p.weight;
 		}
 	}
 
 	delete[] edges;
+
+
+	cout << "Total weight: " << totalWeight << endl;
+
+	node* p = head;
+
+	while (p != nullptr)
+	{
+		node* q = p;
+		while (q != nullptr)
+		{
+			cout << q->word << " ";
+			q = q->nextNeighbor;
+		}
+		cout << endl;
+		p = p->nextVertex;
+	}
 }
 
 void Kruskal::makeSet(const string& word)

@@ -37,15 +37,16 @@ void readGraphFile(string graphPath)
 
 	inputStream >> numOfNodes;
 
-	cout << "Creating " << numOfNodes << " nodes for the graph";
+	//cout << "Creating " << numOfNodes << " nodes for the graph";
 
 	string* nodeVertices = new string[numOfNodes];
-
+	
 	for (int i = 0; i < numOfNodes; i++)
 	{
 		inputStream >> nodeVertices[i];
-		cout << "Node Name: " << nodeVertices[i] << endl;
+		//cout << "Node Name: " << nodeVertices[i] << endl;
 	}
+	
 
 	double** adjMatrix = new double*[numOfNodes];
 
@@ -60,9 +61,9 @@ void readGraphFile(string graphPath)
 		{
 			inputStream >> adjMatrix[i][j];	
 
-			cout << adjMatrix[i][j] << " ";
+			//cout << adjMatrix[i][j] << " ";
 		}
-		cout << endl;
+		//cout << endl;
 	}
 
 	Kruskal kruskal;
