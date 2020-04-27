@@ -69,5 +69,11 @@ void Kruskal::setUnion(node* u, node* v)
 	}
 
 	p->nextNeighbor = v;
+	
+	if (p->nextVertex == v)
+	{
+		p->nextVertex = v->nextVertex;
+	}
+	v->nextVertex = nullptr;
 
 }
