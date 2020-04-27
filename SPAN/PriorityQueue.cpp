@@ -1,5 +1,6 @@
 #include "PriorityQueue.h"
 #include <iostream>
+using namespace std;
 
 PriorityQueue::PriorityQueue()
 {
@@ -10,8 +11,11 @@ PriorityQueue::~PriorityQueue()
 {
 }
 
+
+
 void PriorityQueue::insert(string name, double weight)
 {
+
 }
 
 PriorityQueue::node* PriorityQueue::maximum()
@@ -34,5 +38,9 @@ PriorityQueue::node* PriorityQueue::extractMax()
 }
 
 void PriorityQueue::increaseKey(node* x, int k)
+{
+}
+
+void PriorityQueue::maxHeapify(int index)
 {
 }

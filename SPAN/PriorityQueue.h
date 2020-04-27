@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+using namespace std;
 
 class PriorityQueue
 {
@@ -21,5 +22,5 @@ public:
 	node* maximum();
 	node* extractMax();
 	void increaseKey(node* x, int k);
-	void maxHeapify();
+	void maxHeapify(int index);
 };

@@ -7,23 +7,20 @@ private:
 	struct node
 	{
 		char word[WORD_SIZE];
-		node* next = nullptr;
+		double weight;
+		node* nextNeighbor = nullptr;
+		node* nextVertex = nullptr;
 	};
-	struct nodeList
-	{
-		node* head = nullptr;
-		nodeList* prev = nullptr;
-		nodeList* next = nullptr;
-	};
-	nodeList* head = nullptr;
+
+	node* head = nullptr;
 
 public:
 	Kruskal();
 	~Kruskal();
 
-	nodeList* findMST(double w);
+	node* findMST();
 	void makeSet(char word[WORD_SIZE]);
-	nodeList* findSet(char word[WORD_SIZE]);
-	void setUnion(nodeList* u, nodeList* v);
+	node* findSet(char word[WORD_SIZE]);
+	void setUnion(node* u, node* v);
 
 };

@@ -10,9 +10,9 @@ Kruskal::~Kruskal()
 {
 }
 
-Kruskal::nodeList* Kruskal::findMST(double w)
+Kruskal::node* Kruskal::findMST()
 {
-	nodeList* a = nullptr;
+	node* a = nullptr;
 	// Sort the list of edges in increasing order by weight
 	// for each edge 
 		// if findSet(u) != findSet(v)
@@ -23,32 +23,27 @@ Kruskal::nodeList* Kruskal::findMST(double w)
 
 void Kruskal::makeSet(char word[WORD_SIZE])
 {
-	nodeList* newList = new nodeList();
-
 	node* newNode = new node();
 	strcpy(newNode->word, word);
 
-	newList->head = newNode;
-
 	if (head == nullptr)
 	{
-		head = newList;
+		head = newNode;
 		return;
 	}
 
-	newList->next = head;
-	head->prev = newList;
+	newNode->nextVertex = head;
 
-	head = newList;
+	head = newNode;
 }
 
-Kruskal::nodeList* Kruskal::findSet(char word[WORD_SIZE])
+Kruskal::node* Kruskal::findSet(char word[WORD_SIZE])
 {
-	nodeList* p = head;
+	node* p = head;
 
 	while (p != nullptr)
 	{
-		node* q = p->head;
+		node* q = p;
 
 		while (q != nullptr)
 		{
@@ -56,34 +51,23 @@ Kruskal::nodeList* Kruskal::findSet(char word[WORD_SIZE])
 			{
 				return p;
 			}
-			q = q->next;
+			q = q->nextNeighbor;
 		}
-		p = p->next;
+		p = p->nextVertex;
 	}
 
 	return nullptr;
 }
 
-void Kruskal::setUnion(nodeList* u, nodeList* v)
+void Kruskal::setUnion(node* u, node* v)
 {
-	node* p = u->head;
+	node* p = u;
 
-	while (p->next != nullptr)
+	while (p->nextNeighbor != nullptr)
 	{
-		p = p->next;
+		p = p->nextNeighbor;
 	}
 
-	p->next = v->head;
+	p->nextNeighbor = v;
 
-	if (v->prev != nullptr)
-	{
-		v->prev->next = v->next;
-	}
-
-	if (v->next != nullptr)
-	{
-		v->next->prev = v->prev;
-	}
-
-	delete v;
 }
