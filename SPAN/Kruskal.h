@@ -21,7 +21,8 @@ private:
 	};
 
 	node* head = nullptr;
-	void insertionSort(edge arr[], int n);
+	void quickSort(edge arr[], int p, int r);
+	int qsPartition(edge arr[], int p, int r);
 public:
 	Kruskal();
 	~Kruskal();

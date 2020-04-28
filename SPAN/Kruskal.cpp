@@ -42,9 +42,19 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 			}
 		}
 	}
+	cout << "Printing edges pre sort" << endl;
+	for (int i = 0; i < currEdge; i++)
+	{
+		cout << edges[i].src << "-" << edges[i].dest << ": " << edges[i].weight << endl;
+	}
+	cout << "Sorting edges by weight" << endl;
 	// Sort the list of edges in increasing order by weight
-	insertionSort(edges, currEdge);
-
+	quickSort(edges, 0, currEdge);
+	cout << "Printing edges post sort" << endl;
+	for (int i = 0; i < currEdge; i++)
+	{
+		cout << edges[i].src << "-" << edges[i].dest << ": " << edges[i].weight << endl;
+	}
 	double totalWeight = 0;
 
 	for (int i = 0; i < currEdge; i++)
@@ -156,21 +166,40 @@ void Kruskal::setUnion(node* u, node* v)
 }
 
 
-void Kruskal::insertionSort(edge arr[], int n)
+void Kruskal::quickSort(edge arr[], int p, int r)
 {
-	edge key;
-	int j;
-	for (int i = 1; i < n; i++)
+	if (p < r)
 	{
-		key = arr[i];
-		j = i;
-
-		while (j > 0 && arr[j - 1].weight > key.weight)
-		{
-			arr[j] = arr[j - 1];
-			j--;
-		}
-
-		arr[j] = key;
+		int q = qsPartition(arr, p, r);
+		quickSort(arr, p, q - 1);
+		quickSort(arr, q + 1, r);
 	}
+}
+
+int Kruskal::qsPartition(edge arr[], int p, int r)
+{
+	int i = p;
+	int j = r + 1;
+	edge x = arr[p];
+	do
+	{
+		do i++; while (arr[i].weight < x.weight);
+		do j--; while (arr[j].weight > x.weight);
+		if (i < j)
+		{
+			// swap arr[i] and arr[j];
+			edge temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+		else
+		{
+			break;
+		}
+	} while (true);
+	// swap arr[p] and arr[j];
+	edge temp = arr[p];
+	arr[p] = arr[j];
+	arr[j] = temp;
+	return j;
 }
