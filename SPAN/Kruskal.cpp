@@ -74,6 +74,14 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 		cout << mergedEdges[i].src << "-" << mergedEdges[i].dest << ": " << mergedEdges[i].weight << endl;
 	}
 
+	alphaQuickSort(mergedEdges, 0, currMerge - 1, nodeVertices, true);
+	alphaQuickSort(mergedEdges, 0, currMerge - 1, nodeVertices, false);
+
+	cout << "Printing list of merged edges -- SORTED" << endl;
+	for (int i = 0; i < currMerge; i++)
+	{
+		cout << mergedEdges[i].src << "-" << mergedEdges[i].dest << ": " << mergedEdges[i].weight << endl;
+	}
 	//delete[] edges;
 
 
@@ -187,6 +195,54 @@ int Kruskal::qsPartition(edge arr[], int p, int r)
 	{
 		do i++; while (arr[i].weight < x.weight);
 		do j--; while (arr[j].weight > x.weight);
+		if (i < j)
+		{
+			// swap arr[i] and arr[j];
+			edge temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+		else
+		{
+			break;
+		}
+	} while (true);
+	// swap arr[p] and arr[j];
+	edge temp = arr[p];
+	arr[p] = arr[j];
+	arr[j] = temp;
+	return j;
+}
+
+void Kruskal::alphaQuickSort(edge arr[], int p, int r, string nodeVertices[], bool firstPass)
+{
+	if (p < r)
+	{
+		int q = alphaQSPartition(arr, p, r, nodeVertices, firstPass);
+		alphaQuickSort(arr, p, q - 1, nodeVertices, firstPass);
+		alphaQuickSort(arr, q + 1, r, nodeVertices, firstPass);
+	}
+}
+
+int Kruskal::alphaQSPartition(edge arr[], int p, int r, string nodeVertices[], bool firstPass)
+{
+	int i = p;
+	int j = r + 1;
+	edge x = arr[p];
+	do
+	{
+		if (firstPass)
+		{
+			cout << nodeVertices[arr[i].src] << " " << nodeVertices[x.src] << " " << arr[j].src << endl;
+			do i++; while (nodeVertices[arr[i].src] < nodeVertices[x.src]);
+			do j--; while (nodeVertices[arr[j].src] > nodeVertices[x.src]);
+		}
+		else
+		{
+			cout << nodeVertices[arr[i].src] << " " << nodeVertices[x.src] << " " << nodeVertices[arr[j].src] << endl;
+			do i++; while (nodeVertices[arr[i].dest] < nodeVertices[x.dest]);
+			do j--; while (nodeVertices[arr[j].dest] > nodeVertices[x.dest]);
+		}
 		if (i < j)
 		{
 			// swap arr[i] and arr[j];
