@@ -42,20 +42,14 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 			}
 		}
 	}
-	cout << "Printing edges pre sort" << endl;
-	for (int i = 0; i < currEdge; i++)
-	{
-		cout << edges[i].src << "-" << edges[i].dest << ": " << edges[i].weight << endl;
-	}
-	cout << "Sorting edges by weight" << endl;
+
 	// Sort the list of edges in increasing order by weight
 	quickSort(edges, 0, currEdge);
-	cout << "Printing edges post sort" << endl;
-	for (int i = 0; i < currEdge; i++)
-	{
-		cout << edges[i].src << "-" << edges[i].dest << ": " << edges[i].weight << endl;
-	}
+	
 	double totalWeight = 0;
+
+	edge* mergedEdges = new edge[numOfNodes - 1];
+	int currMerge = 0;
 
 	for (int i = 0; i < currEdge; i++)
 	{
@@ -67,12 +61,20 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 		if (srcContainer != destContainer)
 		{
 			setUnion(srcContainer, destContainer);
-			//cout << "Merging " << srcContainer->word << " and " << destContainer->word << endl;
+			cout << "Merging " << srcContainer->word << " and " << destContainer->word << endl;
+			mergedEdges[currMerge] = p;
+			currMerge++;
 			totalWeight += p.weight;
 		}
 	}
 
-	delete[] edges;
+	cout << "Printing list of merged edges -- UNSORTED" << endl;
+	for (int i = 0; i < currMerge; i++)
+	{
+		cout << mergedEdges[i].src << "-" << mergedEdges[i].dest << ": " << mergedEdges[i].weight << endl;
+	}
+
+	//delete[] edges;
 
 
 	cout << "Total weight: " << totalWeight << endl;
@@ -179,7 +181,7 @@ void Kruskal::quickSort(edge arr[], int p, int r)
 int Kruskal::qsPartition(edge arr[], int p, int r)
 {
 	int i = p;
-	int j = r + 1;
+	int j = r;
 	edge x = arr[p];
 	do
 	{
