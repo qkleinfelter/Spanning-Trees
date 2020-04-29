@@ -149,9 +149,11 @@
   <ItemGroup>
     <ClCompile Include="Kruskal.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Prim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kruskal.h" />
+    <ClInclude Include="Prim.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
