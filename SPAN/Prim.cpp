@@ -48,15 +48,15 @@ int Prim::parent(int index)
 	return index / 2;
 }
 
-void Prim::decreaseKey(node* x, int index, node key)
+void Prim::decreaseKey(int index, double key)
 {
-	if (key.weight > heap[index].weight)
+	if (key > heap[index].weight)
 	{
 		cout << "New key value is greater than current key value" << endl;
 		return;
 	}
 
-	heap[index] = key;
+	heap[index].weight = key;
 
 	while (index > 1 && heap[parent(index)].weight > heap[index].weight)
 	{
@@ -67,10 +67,16 @@ void Prim::decreaseKey(node* x, int index, node key)
 	}
 }
 
-void Prim::insert(const string& word)
+void Prim::insert(const string& word, double key)
 {
-	heapsize += 1;
-	
+	heapsize++;
+	node* newNode = new node();
+	newNode->word = word;
+	newNode->weight = 50000; // Needs to be a super large number
+
+	heap[heapsize] = *newNode;
+
+	decreaseKey(heapsize, key);
 }
 
 void Prim::minHeapify(int index)

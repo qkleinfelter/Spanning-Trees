@@ -12,10 +12,10 @@ private:
 		double weight;
 	};
 
-	void insert(const string& word);
+	void insert(const string& word, double key);
 	node* minimum();
 	node* extractMin();
-	void decreaseKey(node* x, int index, node key);
+	void decreaseKey(int index, double key);
 	void minHeapify(int index);
 	int parent(int index);
 	int left(int index);
