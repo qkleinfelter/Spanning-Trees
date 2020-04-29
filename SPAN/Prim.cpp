@@ -66,3 +66,37 @@ void Prim::decreaseKey(node* x, int index, node key)
 		index = parent(index);
 	}
 }
+
+void Prim::insert(const string& word)
+{
+	heapsize += 1;
+	
+}
+
+void Prim::minHeapify(int index)
+{
+	int l = left(index);
+	int r = right(index);
+
+	int smallest;
+
+	if (l <= heapsize && heap[l].weight < heap[index].weight)
+	{
+		smallest = l;
+	}
+	else
+	{
+		smallest = index;
+	}
+	if (r <= heapsize && heap[r].weight < heap[smallest].weight)
+	{
+		smallest = r;
+	}
+	if (smallest != index)
+	{
+		node temp = heap[index];
+		heap[index] = heap[smallest];
+		heap[smallest] = temp;
+		minHeapify(smallest);
+	}
+}
