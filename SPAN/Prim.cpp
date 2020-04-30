@@ -52,8 +52,8 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 				if (v != nullptr && weights[minRow][i] < v->weight)
 				{
 					cout << nodeVertices[minRow] << "-" << v->word << ": " << weights[minRow][i] << endl;
-					v->weight = weights[minRow][i];
-					totalWeight += v->weight;
+					//v->weight = weights[minRow][i];
+					totalWeight += weights[minRow][i];
 					break;
 				}
 			}
