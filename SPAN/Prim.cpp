@@ -51,7 +51,7 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 				if (v != nullptr && weights[minRow][i] < v->weight)
 				{
-					cout << "Minimum edge is: " << nodeVertices[minRow] << " and lowest adjacent edge is: " << v->word << " with weight: " << weights[minRow][i] << endl;
+					cout << nodeVertices[minRow] << "-" << v->word << ": " << weights[minRow][i] << endl;
 					v->weight = weights[minRow][i];
 					totalWeight += v->weight;
 					break;
@@ -124,7 +124,7 @@ void Prim::insert(const string& word, double key)
 	heapsize++;
 	node* newNode = new node();
 	newNode->word = word;
-	newNode->weight = 50000; // Needs to be a super large number
+	newNode->weight = std::numeric_limits<double>::max(); 
 
 	heap[heapsize] = *newNode;
 
