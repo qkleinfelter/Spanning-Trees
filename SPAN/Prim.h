@@ -14,21 +14,22 @@ private:
 
 	void insert(const string& word, double key);
 	node* minimum();
-	node* extractMin();
+	string extractMinWord();
 	void decreaseKey(int index, double key);
 	void minHeapify(int index);
 	int parent(int index);
 	int left(int index);
 	int right(int index);
+	node* getVertex(const string& word);
 
 	int heapLength;
 	int heapsize;
 
-	node heap[];
+	node* heap;
 
 public:
 	Prim();
 	~Prim();
 
-	void findMST();
+	void findMST(string* nodeVertices, double** weights, int numOfNodes);
 };

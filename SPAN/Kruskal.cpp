@@ -68,6 +68,7 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 		}
 	}
 
+	/*
 	cout << "Printing list of merged edges -- UNSORTED" << endl;
 	for (int i = 0; i < currMerge; i++)
 	{
@@ -82,6 +83,7 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 	{
 		cout << mergedEdges[i].src << "-" << mergedEdges[i].dest << ": " << mergedEdges[i].weight << endl;
 	}
+	*/
 	//delete[] edges;
 
 

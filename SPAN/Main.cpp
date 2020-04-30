@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "Kruskal.h"
+#include "Prim.h"
 
 using namespace std;
 
@@ -66,9 +67,19 @@ void readGraphFile(string graphPath)
 		//cout << endl;
 	}
 
-	Kruskal kruskal;
+	Kruskal* kruskal = new Kruskal();
 	
-	kruskal.findMST(nodeVertices, adjMatrix, numOfNodes);
+	kruskal->findMST(nodeVertices, adjMatrix, numOfNodes);
+
+	delete kruskal;
+
+	cout << "---------------------------" << endl;
+
+	Prim* prim = new Prim();
+
+	prim->findMST(nodeVertices, adjMatrix, numOfNodes);
+
+	delete prim;
 
 	delete[] nodeVertices;
 

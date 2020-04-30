@@ -13,12 +13,63 @@ Prim::~Prim()
 
 }
 
+void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
+{
+	heapLength = numOfNodes + 1;
+	heap = new node[heapLength];
+	heapsize = 0;
+
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		insert(nodeVertices[i], std::numeric_limits<double>::max());
+	}
+
+	decreaseKey(1, 0);
+
+	int totalWeight = 0;
+
+	while (heapsize != 0)
+	{
+		string minWord = extractMinWord();
+		int minRow = -1;
+		for (int i = 0; i < numOfNodes; i++)
+		{
+			if (nodeVertices[i] == minWord)
+			{
+				minRow = i;
+				break;
+			}
+		}
+
+		for (int i = 0; i < numOfNodes; i++)
+		{
+			if (weights[minRow][i] != 0)
+			{
+				const string& vWord = nodeVertices[i];
+
+				node* v = getVertex(vWord);
+
+				if (v != nullptr && weights[minRow][i] < v->weight)
+				{
+					cout << "Minimum edge is: " << nodeVertices[minRow] << " and lowest adjacent edge is: " << v->word << " with weight: " << weights[minRow][i] << endl;
+					v->weight = weights[minRow][i];
+					totalWeight += v->weight;
+				}
+			}
+		}
+	}
+	cout << totalWeight << endl;
+
+	delete[] heap;
+	
+}
+
 Prim::node* Prim::minimum()
 {
 	return &heap[1];
 }
 
-Prim::node* Prim::extractMin()
+string Prim::extractMinWord()
 {
 	if (heapsize < 1)
 	{
@@ -28,9 +79,9 @@ Prim::node* Prim::extractMin()
 
 	node min = heap[1];
 	heap[1] = heap[heapsize];
-	heapsize -= 1;
+	heapsize--;
 	minHeapify(1);
-	return &min;
+	return min.word;
 }
 
 int Prim::left(int index)
@@ -52,7 +103,7 @@ void Prim::decreaseKey(int index, double key)
 {
 	if (key > heap[index].weight)
 	{
-		cout << "New key value is greater than current key value" << endl;
+		//cout << "New key value is greater than current key value" << endl;
 		return;
 	}
 
@@ -105,4 +156,17 @@ void Prim::minHeapify(int index)
 		heap[smallest] = temp;
 		minHeapify(smallest);
 	}
+}
+
+Prim::node* Prim::getVertex(const string& word)
+{
+	for (int i = 1; i <= heapsize; i++)
+	{
+		if (heap[i].word == word)
+		{
+			return &heap[1];
+		}
+	}
+
+	return nullptr;
 }
