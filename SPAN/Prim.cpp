@@ -54,6 +54,7 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 					cout << "Minimum edge is: " << nodeVertices[minRow] << " and lowest adjacent edge is: " << v->word << " with weight: " << weights[minRow][i] << endl;
 					v->weight = weights[minRow][i];
 					totalWeight += v->weight;
+					break;
 				}
 			}
 		}
@@ -164,7 +165,7 @@ Prim::node* Prim::getVertex(const string& word)
 	{
 		if (heap[i].word == word)
 		{
-			return &heap[1];
+			return &heap[i];
 		}
 	}
 
