@@ -10,6 +10,7 @@ private:
 	{
 		string word;
 		double weight;
+		string predecessor;
 	};
 
 	void insert(const string& word, double key);
@@ -21,6 +22,7 @@ private:
 	int left(int index);
 	int right(int index);
 	node* getVertex(const string& word);
+	node findInNodes(node* nodes, const string& word, int startPos);
 
 	int heapLength;
 	int heapsize;

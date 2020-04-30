@@ -28,6 +28,9 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 	int totalWeight = 0;
 
+	node* nodes = new node[numOfNodes];
+	int currNode = 0;
+
 	while (heapsize != 0)
 	{
 		string minWord = extractMinWord();
@@ -40,7 +43,6 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 				break;
 			}
 		}
-
 		for (int i = 0; i < numOfNodes; i++)
 		{
 			if (weights[minRow][i] != 0)
@@ -51,14 +53,30 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 				if (v != nullptr && weights[minRow][i] < v->weight)
 				{
-					cout << nodeVertices[minRow] << "-" << v->word << ": " << weights[minRow][i] << endl;
-					//v->weight = weights[minRow][i];
-					totalWeight += weights[minRow][i];
-					break;
+					//cout << nodeVertices[minRow] << "-" << v->word << ": " << weights[minRow][i] << endl;
+					v->predecessor = nodeVertices[minRow];
+					v->weight = weights[minRow][i];
+					nodes[currNode] = node();
+					nodes[currNode].predecessor = nodeVertices[minRow];
+					nodes[currNode].weight = weights[minRow][i];
+					nodes[currNode].word = v->word;
+					currNode++;
+
+					//totalWeight += weights[minRow][i];
+					decreaseKey(i+1, 0);
+					//break;
 				}
 			}
 		}
 	}
+	currNode--;
+	node end = nodes[currNode];
+	while (end.predecessor != "")
+	{
+		cout << end.word << " is preceeded by " << end.predecessor << " on an edge with weight " << end.weight << endl;
+		end = findInNodes(nodes, end.predecessor, currNode);
+	}
+
 	cout << totalWeight << endl;
 
 	delete[] heap;
@@ -125,6 +143,7 @@ void Prim::insert(const string& word, double key)
 	node* newNode = new node();
 	newNode->word = word;
 	newNode->weight = std::numeric_limits<double>::max(); 
+	newNode->predecessor = "";
 
 	heap[heapsize] = *newNode;
 
@@ -170,4 +189,15 @@ Prim::node* Prim::getVertex(const string& word)
 	}
 
 	return nullptr;
+}
+
+Prim::node Prim::findInNodes(node* nodes, const string& word, int startPos)
+{
+	for (int i = startPos; i >= 0; i--)
+	{
+		if (nodes[i].word == word)
+		{
+			return nodes[i];
+		}
+	}
 }
