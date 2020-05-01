@@ -15,77 +15,74 @@ Prim::~Prim()
 
 void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 {
+	nodes = new node[numOfNodes];
+
 	heapLength = numOfNodes + 1;
-	heap = new node[heapLength];
+
+	heap = new node * [heapLength];
 	heapsize = 0;
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
-		insert(nodeVertices[i], std::numeric_limits<double>::max());
+		node newNode;
+		newNode.word = nodeVertices[i];
+		newNode.weight = std::numeric_limits<double>::max();
+		newNode.predecessor = "";
+		nodes[i] = newNode;
+		heap[i + 1] = &nodes[i];
+		heapsize++;
 	}
 
 	decreaseKey(1, 0);
 
-	int totalWeight = 0;
-
-	node* nodes = new node[numOfNodes];
-	int currNode = 0;
-
 	while (heapsize != 0)
 	{
-		string minWord = extractMinWord();
-		int minRow = -1;
+		node* u = extractMinNode();
+
+		int uIndex = u - &nodes[0]; 
+
 		for (int i = 0; i < numOfNodes; i++)
 		{
-			if (nodeVertices[i] == minWord)
-			{
-				minRow = i;
-				break;
-			}
-		}
-		for (int i = 0; i < numOfNodes; i++)
-		{
-			if (weights[minRow][i] != 0)
+			if (weights[uIndex][i] != 0)
 			{
 				const string& vWord = nodeVertices[i];
 
-				node* v = getVertex(vWord);
+				node* v = &nodes[i];
 
-				if (v != nullptr && weights[minRow][i] < v->weight)
+				int posInQueue = findInQueue(v);
+
+				if (posInQueue != 0 && weights[uIndex][i])
 				{
-					//cout << nodeVertices[minRow] << "-" << v->word << ": " << weights[minRow][i] << endl;
-					v->predecessor = nodeVertices[minRow];
-					v->weight = weights[minRow][i];
-					nodes[currNode] = node();
-					nodes[currNode].predecessor = nodeVertices[minRow];
-					nodes[currNode].weight = weights[minRow][i];
-					nodes[currNode].word = v->word;
-					currNode++;
-
-					//totalWeight += weights[minRow][i];
-					decreaseKey(i+1, 0);
-					//break;
+					double newWeight = weights[uIndex][i];
+					v->predecessor = u->word;
+					decreaseKey(posInQueue, newWeight);
 				}
 			}
 		}
 	}
-	currNode--;
-	node end = nodes[currNode];
-	while (end.predecessor != "")
+
+	double totalWeight = 0;
+
+	for (int i = 0; i < numOfNodes; i++)
 	{
-		cout << end.word << " is preceeded by " << end.predecessor << " on an edge with weight " << end.weight << endl;
-		end = findInNodes(nodes, end.predecessor, currNode);
+		node& p = nodes[i];
+
+		if (p.predecessor != "")
+		{
+			cout << p.word << "-" << p.predecessor << ": " << p.weight << endl;
+			totalWeight += p.weight;
+		}
 	}
 
 	cout << totalWeight << endl;
 
+	delete[] nodes;
 	delete[] heap;
-	
 }
 
 Prim::node* Prim::minimum()
 {
-	return &heap[1];
+	return heap[1];
 }
 
 Prim::node* Prim::extractMinNode()
@@ -184,9 +181,9 @@ Prim::node* Prim::getVertex(const string& word)
 {
 	for (int i = 1; i <= heapsize; i++)
 	{
-		if (heap[i].word == word)
+		if (heap[i]->word == word)
 		{
-			return &heap[i];
+			return heap[i];
 		}
 	}
 
