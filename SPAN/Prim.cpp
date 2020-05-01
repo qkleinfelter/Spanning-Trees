@@ -51,7 +51,7 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 				int posInQueue = findInQueue(v);
 
-				if (posInQueue != 0 && weights[uIndex][i])
+				if (posInQueue != 0 && weights[uIndex][i] < v->weight)
 				{
 					double newWeight = weights[uIndex][i];
 					v->predecessor = u->word;
