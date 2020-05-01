@@ -28,6 +28,7 @@ private:
 	int heapLength;
 	int heapsize;
 
+	node* nodes;
 	node** heap;
 
 public:

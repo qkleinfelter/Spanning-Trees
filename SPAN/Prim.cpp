@@ -96,11 +96,11 @@ Prim::node* Prim::extractMinNode()
 		return nullptr;
 	}
 
-	node min = heap[1];
+	node* min = heap[1];
 	heap[1] = heap[heapsize];
 	heapsize--;
 	minHeapify(1);
-	return &min;
+	return min;
 }
 
 int Prim::left(int index)
