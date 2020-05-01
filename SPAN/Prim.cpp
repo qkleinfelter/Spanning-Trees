@@ -88,7 +88,7 @@ Prim::node* Prim::minimum()
 	return &heap[1];
 }
 
-string Prim::extractMinWord()
+Prim::node* Prim::extractMinNode()
 {
 	if (heapsize < 1)
 	{
@@ -100,7 +100,7 @@ string Prim::extractMinWord()
 	heap[1] = heap[heapsize];
 	heapsize--;
 	minHeapify(1);
-	return min.word;
+	return &min;
 }
 
 int Prim::left(int index)

@@ -15,7 +15,7 @@ private:
 
 	void insert(const string& word, double key);
 	node* minimum();
-	string extractMinWord();
+	node* extractMinNode();
 	void decreaseKey(int index, double key);
 	void minHeapify(int index);
 	int parent(int index);
