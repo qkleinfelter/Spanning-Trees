@@ -146,7 +146,7 @@ void Prim::insert(const string& word, double key)
 	newNode->weight = std::numeric_limits<double>::max(); 
 	newNode->predecessor = "";
 
-	heap[heapsize] = *newNode;
+	heap[heapsize] = newNode;
 
 	decreaseKey(heapsize, key);
 }
@@ -155,10 +155,9 @@ void Prim::minHeapify(int index)
 {
 	int l = left(index);
 	int r = right(index);
-
 	int smallest;
 
-	if (l <= heapsize && heap[l].weight < heap[index].weight)
+	if (l <= heapsize && heap[l]->weight < heap[index]->weight)
 	{
 		smallest = l;
 	}
@@ -166,13 +165,15 @@ void Prim::minHeapify(int index)
 	{
 		smallest = index;
 	}
-	if (r <= heapsize && heap[r].weight < heap[smallest].weight)
+
+	if (r <= heapsize && heap[r]->weight < heap[smallest]->weight)
 	{
 		smallest = r;
 	}
+
 	if (smallest != index)
 	{
-		node temp = heap[index];
+		node* temp = heap[index];
 		heap[index] = heap[smallest];
 		heap[smallest] = temp;
 		minHeapify(smallest);
