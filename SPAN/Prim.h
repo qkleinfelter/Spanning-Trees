@@ -13,16 +13,12 @@ private:
 		string predecessor;
 	};
 
-	void insert(const string& word, double key);
-	node* minimum();
 	node* extractMinNode();
 	void decreaseKey(int index, double key);
 	void minHeapify(int index);
 	int parent(int index);
 	int left(int index);
 	int right(int index);
-	node* getVertex(const string& word);
-	node findInNodes(node* nodes, const string& word, int startPos);
 	int findInQueue(node* p);
 
 	int heapLength;

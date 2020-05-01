@@ -80,11 +80,6 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 	delete[] heap;
 }
 
-Prim::node* Prim::minimum()
-{
-	return heap[1];
-}
-
 Prim::node* Prim::extractMinNode()
 {
 	if (heapsize < 1)
@@ -135,18 +130,6 @@ void Prim::decreaseKey(int index, double key)
 	}
 }
 
-void Prim::insert(const string& word, double key)
-{
-	heapsize++;
-	node* newNode = new node();
-	newNode->word = word;
-	newNode->weight = std::numeric_limits<double>::max(); 
-	newNode->predecessor = "";
-
-	heap[heapsize] = newNode;
-
-	decreaseKey(heapsize, key);
-}
 
 void Prim::minHeapify(int index)
 {
@@ -174,30 +157,6 @@ void Prim::minHeapify(int index)
 		heap[index] = heap[smallest];
 		heap[smallest] = temp;
 		minHeapify(smallest);
-	}
-}
-
-Prim::node* Prim::getVertex(const string& word)
-{
-	for (int i = 1; i <= heapsize; i++)
-	{
-		if (heap[i]->word == word)
-		{
-			return heap[i];
-		}
-	}
-
-	return nullptr;
-}
-
-Prim::node Prim::findInNodes(node* nodes, const string& word, int startPos)
-{
-	for (int i = startPos; i >= 0; i--)
-	{
-		if (nodes[i].word == word)
-		{
-			return nodes[i];
-		}
 	}
 }
 
