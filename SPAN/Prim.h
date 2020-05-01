@@ -23,11 +23,12 @@ private:
 	int right(int index);
 	node* getVertex(const string& word);
 	node findInNodes(node* nodes, const string& word, int startPos);
+	int findInQueue(node* p);
 
 	int heapLength;
 	int heapsize;
 
-	node* heap;
+	node** heap;
 
 public:
 	Prim();

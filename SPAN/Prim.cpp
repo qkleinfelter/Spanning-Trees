@@ -201,3 +201,13 @@ Prim::node Prim::findInNodes(node* nodes, const string& word, int startPos)
 		}
 	}
 }
+
+int Prim::findInQueue(node* p)
+{
+	for (int i = 1; i <= heapsize; i++)
+	{
+		if (heap[i] == p) return i;
+	}
+
+	return 0;
+}
