@@ -120,17 +120,18 @@ int Prim::parent(int index)
 
 void Prim::decreaseKey(int index, double key)
 {
-	if (key > heap[index].weight)
+	node* p = heap[index];
+	if (key > p->weight)
 	{
-		//cout << "New key value is greater than current key value" << endl;
+		cout << "New key value is greater than current key value" << endl;
 		return;
 	}
 
-	heap[index].weight = key;
+	p->weight = key;
 
-	while (index > 1 && heap[parent(index)].weight > heap[index].weight)
+	while (index > 1 && heap[parent(index)]->weight > heap[index]->weight)
 	{
-		node temp = heap[index];
+		node* temp = heap[index];
 		heap[index] = heap[parent(index)];
 		heap[parent(index)] = temp;
 		index = parent(index);
