@@ -15,19 +15,19 @@ Prim::~Prim()
 
 void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 {
-	nodes = new node[numOfNodes];
+	nodes = new edge[numOfNodes];
 
 	heapLength = numOfNodes + 1;
 
-	heap = new node * [heapLength];
+	heap = new edge * [heapLength];
 	heapsize = 0;
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
-		node newNode;
-		newNode.word = nodeVertices[i];
+		edge newNode;
+		newNode.src = i;
 		newNode.weight = std::numeric_limits<double>::max();
-		newNode.predecessor = "";
+		newNode.dest = i;
 		nodes[i] = newNode;
 		heap[i + 1] = &nodes[i];
 		heapsize++;
@@ -37,7 +37,7 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 	while (heapsize != 0)
 	{
-		node* u = extractMinNode();
+		edge* u = extractMinNode();
 
 		int uIndex = u - &nodes[0]; 
 
@@ -47,14 +47,14 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 			{
 				const string& vWord = nodeVertices[i];
 
-				node* v = &nodes[i];
+				edge* v = &nodes[i];
 
 				int posInQueue = findInQueue(v);
 
 				if (posInQueue != 0 && weights[uIndex][i] < v->weight)
 				{
 					double newWeight = weights[uIndex][i];
-					v->predecessor = u->word;
+					v->dest = uIndex;
 					decreaseKey(posInQueue, newWeight);
 				}
 			}
@@ -65,11 +65,11 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
-		node& p = nodes[i];
+		edge& p = nodes[i];
 
-		if (p.predecessor != "")
+		if (p.dest != p.src)
 		{
-			cout << p.word << "-" << p.predecessor << ": " << p.weight << endl;
+			cout << nodeVertices[p.src] << "-" << nodeVertices[p.dest] << ": " << p.weight << endl;
 			totalWeight += p.weight;
 		}
 	}
@@ -80,7 +80,7 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 	delete[] heap;
 }
 
-Prim::node* Prim::extractMinNode()
+edge* Prim::extractMinNode()
 {
 	if (heapsize < 1)
 	{
@@ -88,7 +88,7 @@ Prim::node* Prim::extractMinNode()
 		return nullptr;
 	}
 
-	node* min = heap[1];
+	edge* min = heap[1];
 	heap[1] = heap[heapsize];
 	heapsize--;
 	minHeapify(1);
@@ -112,7 +112,7 @@ int Prim::parent(int index)
 
 void Prim::decreaseKey(int index, double key)
 {
-	node* p = heap[index];
+	edge* p = heap[index];
 	if (key > p->weight)
 	{
 		cout << "New key value is greater than current key value" << endl;
@@ -123,7 +123,7 @@ void Prim::decreaseKey(int index, double key)
 
 	while (index > 1 && heap[parent(index)]->weight > heap[index]->weight)
 	{
-		node* temp = heap[index];
+		edge* temp = heap[index];
 		heap[index] = heap[parent(index)];
 		heap[parent(index)] = temp;
 		index = parent(index);
@@ -153,14 +153,14 @@ void Prim::minHeapify(int index)
 
 	if (smallest != index)
 	{
-		node* temp = heap[index];
+		edge* temp = heap[index];
 		heap[index] = heap[smallest];
 		heap[smallest] = temp;
 		minHeapify(smallest);
 	}
 }
 
-int Prim::findInQueue(node* p)
+int Prim::findInQueue(edge* p)
 {
 	for (int i = 1; i <= heapsize; i++)
 	{
