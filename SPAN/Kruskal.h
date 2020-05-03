@@ -15,6 +15,9 @@ private:
 	};
 
 	node* head = nullptr;
+	void sortWeightAscending(edge arr[], int p, int r);
+	int partitionWeightAscending(edge arr[], int p, int r);
+
 public:
 	Kruskal();
 	~Kruskal();
