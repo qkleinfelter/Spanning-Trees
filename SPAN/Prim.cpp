@@ -61,6 +61,20 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 		}
 	}
 
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		edge& currEdge = nodes[i];
+
+		if (nodeVertices[currEdge.src] > nodeVertices[currEdge.dest])
+		{
+			int temp = currEdge.src;
+			currEdge.src = currEdge.dest;
+			currEdge.dest = temp;
+		}
+	}
+
+	alphabeticalInsertionSort(nodes, numOfNodes, nodeVertices);
+
 	double totalWeight = 0;
 
 	for (int i = 0; i < numOfNodes; i++)
@@ -69,12 +83,21 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 		if (p.dest != p.src)
 		{
-			cout << nodeVertices[p.src] << "-" << nodeVertices[p.dest] << ": " << p.weight << endl;
 			totalWeight += p.weight;
 		}
 	}
 
 	cout << totalWeight << endl;
+
+	for (int i = 0; i < numOfNodes; i++)
+	{
+		edge& p = nodes[i];
+
+		if (p.dest != p.src)
+		{
+			cout << nodeVertices[p.src] << "-" << nodeVertices[p.dest] << ": " << p.weight << endl;
+		}
+	}
 
 	delete[] nodes;
 	delete[] heap;
@@ -168,4 +191,34 @@ int Prim::findInQueue(edge* p)
 	}
 
 	return 0;
+}
+
+void Prim::alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[])
+{
+	int i, j;
+	edge key;
+	for (i = 1; i < numOfEdges; i++)
+	{
+		key = arr[i];
+		j = i - 1;
+
+		while (j >= 0 && !edgeAlphaCompare(arr[j], key, nodeVertices))
+		{
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = key;
+	}
+}
+
+bool Prim::edgeAlphaCompare(edge& edge1, edge& edge2, string nodeVertices[])
+{
+	if (nodeVertices[edge1.src] == nodeVertices[edge2.src])
+	{
+		return nodeVertices[edge1.dest] < nodeVertices[edge2.dest];
+	}
+	else
+	{
+		return nodeVertices[edge1.src] < nodeVertices[edge2.src];
+	}
 }

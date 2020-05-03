@@ -22,6 +22,8 @@ private:
 	edge* nodes;
 	edge** heap;
 
+	void alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[]);
+	bool edgeAlphaCompare(edge& edge1, edge& edge2, string nodeVertices[]);
 public:
 	Prim();
 	~Prim();
