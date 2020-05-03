@@ -150,13 +150,11 @@
     <ClCompile Include="Kruskal.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Prim.cpp" />
-    <ClCompile Include="QuickSort.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Kruskal.h" />
     <ClInclude Include="Prim.h" />
-    <ClInclude Include="QuickSort.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,6 +18,9 @@ private:
 	void sortWeightAscending(edge arr[], int p, int r);
 	int partitionWeightAscending(edge arr[], int p, int r);
 
+	void alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[]);
+	bool edgeAlphaCompare(edge& edge1, edge& edge2, string nodeVertices[]);
+
 public:
 	Kruskal();
 	~Kruskal();

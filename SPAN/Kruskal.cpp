@@ -1,5 +1,4 @@
 #include "Kruskal.h";
-#include "QuickSort.h";
 #include <string>;
 #include <iostream>
 
@@ -75,7 +74,19 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 		cout << nodeVertices[mergedEdges[i].src] << "-" << nodeVertices[mergedEdges[i].dest] << ": " << mergedEdges[i].weight << endl;
 	}
 
-	QuickSort::sortAlphaAscending(mergedEdges, 0, currMerge - 1, nodeVertices);
+	for (int i = 0; i < currMerge; i++)
+	{
+		edge& currEdge = mergedEdges[i];
+
+		if (nodeVertices[currEdge.src] > nodeVertices[currEdge.dest])
+		{
+			int temp = currEdge.src;
+			currEdge.src = currEdge.dest;
+			currEdge.dest = temp;
+		}
+	}
+
+	alphabeticalInsertionSort(mergedEdges, currMerge, nodeVertices);
 
 	cout << "Printing list of merged edges -- SORTED" << endl;
 	for (int i = 0; i < currMerge; i++)
@@ -212,4 +223,34 @@ int Kruskal::partitionWeightAscending(edge arr[], int p, int r)
 	arr[p] = arr[j];
 	arr[j] = temp;
 	return j;
+}
+
+void Kruskal::alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[])
+{
+	int i, j;
+	edge key;
+	for (i = 1; i < numOfEdges; i++)
+	{
+		key = arr[i];
+		j = i - 1;
+
+		while (j >= 0 && !edgeAlphaCompare(arr[j], key, nodeVertices))
+		{
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = key;
+	}
+}
+
+bool Kruskal::edgeAlphaCompare(edge& edge1, edge& edge2, string nodeVertices[])
+{
+	if (nodeVertices[edge1.src] == nodeVertices[edge2.src])
+	{
+		return nodeVertices[edge1.dest] < nodeVertices[edge2.dest];
+	}
+	else
+	{
+		return nodeVertices[edge1.src] < nodeVertices[edge2.src];
+	}
 }

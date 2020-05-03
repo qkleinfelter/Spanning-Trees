@@ -24,18 +24,12 @@
     <ClCompile Include="Prim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QuickSort.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kruskal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Prim.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QuickSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Edge.h">
