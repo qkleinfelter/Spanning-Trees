@@ -149,96 +149,113 @@ void Kruskal::makeSet(const string& word)
 
 Kruskal::node* Kruskal::findSet(const string& word)
 {
-	node* p = head;
+	// Finds the set that the passed in word is located in
+	node* p = head; // Start at the head
 
 	while (p != nullptr)
 	{
-		node* q = p;
+		node* q = p; // Set q to be p's current location, q will traverse left to right, while p goes top to bottom
 
 		while (q != nullptr)
 		{
 			if (q->word == word)
 			{
+				// If q is at the word we want, return p (the set containing the word)
 				return p;
 			}
 
-			q = q->nextNeighbor;
+			q = q->nextNeighbor; // Otherwise, move q to the right 
 		}
 
-		p = p->nextVertex;
+		p = p->nextVertex; // If we didn't find the word in that level of the lists, move down a level and try again
 	}
 
-	return nullptr;
+	return nullptr; // If we reach this, we didn't find it so return nullptr
 }
 
 void Kruskal::setUnion(node* u, node* v)
 {
-	node* p = u;
+	// Merges 2 sets that are passed in
+	node* p = u; // Node that starts at u, but we are going to move it as far right as we can
 
 	while (p->nextNeighbor != nullptr)
 	{
+		// While p has a next neighbor, move to that one, so we can
+		// drop v on the end of it once we're done
 		p = p->nextNeighbor;
 	}
 
-	p->nextNeighbor = v;
+	p->nextNeighbor = v; // Add v to the end of p
 	
-	node* q = head;
+	node* q = head; // Start q at the beginning of the list
 
 	while (q->nextVertex != nullptr)
 	{
+		// Loop through the vertices, if our next vertex is v,
+		// that means we need to make our next vertex v's next vertex
+		// because v is no longer a vertex
 		if (q->nextVertex == v)
 		{
 			q->nextVertex = v->nextVertex;
 			break;
 		}
 
-		q = q->nextVertex;
+		q = q->nextVertex; // Continue on to the next vertex is we didn't find it there
 	}
 
 	if (head == v)
 	{
-		head = v->nextVertex;
+		// If v was the head before
+		head = v->nextVertex; // Make the head v's next vertex
 	}
 
-	v->nextVertex = nullptr;
+	v->nextVertex = nullptr; // And now v is an interior node, so it doesn't have a next vertex
 }
 
 void Kruskal::sortWeightAscending(edge arr[], int p, int r)
 {
+	// Sort the list of edges from p to r, by weight ascending
+	// using the quicksort algorithm
 	if (p < r)
 	{
-		int q = partitionWeightAscending(arr, p, r);
-		sortWeightAscending(arr, p, q - 1);
-		sortWeightAscending(arr, q + 1, r);
+		// If p is less than r, partition the array
+		int q = partitionWeightAscending(arr, p, r); // And store the pivot index in q
+		sortWeightAscending(arr, p, q - 1); // Then, recursively quick sort the left side 
+		sortWeightAscending(arr, q + 1, r); // and the right side
 	}
 }
 
 int Kruskal::partitionWeightAscending(edge arr[], int p, int r)
 {
-	int i = p;
-	int j = r;
-	edge x = arr[p];
+	// Partition the edges array from p to r
+	// returning the location of the pivot
+	int i = p - 1; // Start i at the beginning of our section - 1, because we increment it immediately
+	int j = r; // And j at the end of our section
+	edge x = arr[p]; // X is the first edge in the array, which will become our pivot
 	do
 	{
-		do i++; while (i < j && arr[i].weight < x.weight);
-		do j--; while (arr[j].weight > x.weight);
+		do i++; while (arr[i].weight < x.weight); // Increase i, then continue to do it as long as the edge at i's weight is less than that of the pivot
+		do j--; while (arr[j].weight > x.weight); // Decrease j, then continue to do so as long as the edge at j's weight is greater than that of the pivot
 		if (i < j)
 		{
-			// swap arr[i] and arr[j];
+			// If i is less than i and j we want to swap
+			// arr[i] <=> arr[j]
 			edge temp = arr[i];
 			arr[i] = arr[j];
 			arr[j] = temp;
 		}
 		else
 		{
+			// Otherwise break out of the loop
 			break;
 		}
-	} while (true);
-	// swap arr[p] and arr[j];
+	} while (true); // Do this infinitely, i.e. until we hit the break
+	// At the end, swap arr[j] <=> arr[p]
 	edge temp = arr[p];
 	arr[p] = arr[j];
 	arr[j] = temp;
-	return j;
+
+	return j; // and return j, the location of the pivot
 }
 
 void Kruskal::alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[])
