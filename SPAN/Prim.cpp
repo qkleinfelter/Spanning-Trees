@@ -1,3 +1,18 @@
+/*
+	File: Prim.cpp - Implementation of Prim's algorithm to find a MST of a graph
+	c.f.: Prim.h
+
+	This class implements Prim's algorithm to find a minimum spanning
+	tree of a graph, using a shared edge struct, a min priority queue,
+	and insertion sort
+
+	Author: Quinn Kleinfelter
+	Class: EECS 2510-001 Non Linear Data Structures Spring 2020
+	Instructor: Dr. Thomas
+	Last Edited: 5/5/20
+	Copyright: Copyright 2020 by Quinn Kleinfelter. All rights reserved.
+*/
+
 #include "Prim.h"
 #include <iostream>
 
@@ -5,57 +20,68 @@ using namespace std;
 
 Prim::Prim()
 {
-
+	// Constructor, nothing really needed here as we handle
+	// most things at the beginning of findMST
 }
 
 Prim::~Prim()
 {
-
+	// Destructor, nothing really needed here as we handle
+	// most things at the end of findMST
 }
 
 void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 {
-	nodes = new edge[numOfNodes];
+	// Finds a minimum spanning tree on the graph specified
+	// by the parameters using Prim's algorithm
 
-	heapLength = numOfNodes + 1;
+	nodes = new edge[numOfNodes]; // initialize our nodes array
 
-	heap = new edge * [heapLength];
-	heapsize = 0;
+	heapLength = numOfNodes + 1; // Heaplength needs to be the number of nodes + 1 so we can use the heap as 1 indexed
+
+	heap = new edge * [heapLength]; // Initialize the heap array
+	heapsize = 0; // Heapsize is 0 because there is nothing in it
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
+		// Loop through creating our edges to fill up the nodes and heap array
 		edge newNode;
-		newNode.src = i;
-		newNode.weight = std::numeric_limits<double>::max();
-		newNode.dest = i;
-		nodes[i] = newNode;
-		heap[i + 1] = &nodes[i];
-		heapsize++;
+		newNode.src = i; // The source of the new node is i, the current node
+		newNode.weight = std::numeric_limits<double>::max(); // Weight starts off as the numerical maximum for a double
+		newNode.dest = i; // The destination starts at i as well
+		nodes[i] = newNode; // Nodes[i] becomes our new node
+		heap[i + 1] = &nodes[i]; // The heap of i + 1 (because it is one indexed) becomes a reference to the new node in the nodes array
+		heapsize++; // Increment the heapsize
 	}
 
-	decreaseKey(1, 0);
+	decreaseKey(1, 0); // Decrease the first element to a key of 0
 
 	while (heapsize != 0)
 	{
-		edge* u = extractMinNode();
+		// Loop while we still have something in the heap
+		edge* u = extractMinNode(); // Extract the minimum node from the heap
 
-		int uIndex = u - &nodes[0]; 
+		int uIndex = u - &nodes[0]; // Calculate the index of u in the nodes array by subtracting the pointer to it and to nodes[0]. C++ will make the pointer math work nicely for us
 
 		for (int i = 0; i < numOfNodes; i++)
 		{
+			// Loop through the row of the adjacency matrix that contains the current node, so we consider edges that include u
 			if (weights[uIndex][i] != 0)
 			{
-				const string& vWord = nodeVertices[i];
+				// If the weight at the given index is not 0, we know there is an edge here
+				const string& vWord = nodeVertices[i]; // Grab the word for v (or the destination), by checking nodeVertices at i
 
-				edge* v = &nodes[i];
+				edge* v = &nodes[i]; // The edge for v is simply a reference to to nodes at i
 
-				int posInQueue = findInQueue(v);
+				int posInQueue = findInQueue(v); // Next we want to check if v is in the queue, so we try to find it in the queue
 
 				if (posInQueue != 0 && weights[uIndex][i] < v->weight)
 				{
-					double newWeight = weights[uIndex][i];
-					v->dest = uIndex;
-					decreaseKey(posInQueue, newWeight);
+					// If we found v in the queue, (posInQueue != 0) and the weight at the index is less
+					// than the weight already attached to v
+					double newWeight = weights[uIndex][i]; // Grab the weight for v
+					v->dest = uIndex; // Set v's destination to be u
+					decreaseKey(posInQueue, newWeight); // Decrease v's key in the queue to be the new weight we grabbed above
 				}
 			}
 		}
@@ -63,43 +89,53 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
-		edge& currEdge = nodes[i];
+		// Loop through our nodes array making the vertices be in the correct order
+		// i.e. a-b instead of b-a
+		edge& currEdge = nodes[i]; // Grab the current edge
 
 		if (nodeVertices[currEdge.src] > nodeVertices[currEdge.dest])
 		{
+			// If the src is greater than the destination, lexicographically,
+			// swap them
 			int temp = currEdge.src;
 			currEdge.src = currEdge.dest;
 			currEdge.dest = temp;
 		}
 	}
 
-	alphabeticalInsertionSort(nodes, numOfNodes, nodeVertices);
+	alphabeticalInsertionSort(nodes, numOfNodes, nodeVertices); // Sort the nodes alphabetically using insertion sort
 
-	double totalWeight = 0;
+	double totalWeight = 0; // Double variable to keep track of the total weight, because we want to print this before any edges
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
+		// Loop through the nodes array
 		edge& p = nodes[i];
 
 		if (p.dest != p.src)
 		{
+			// If our current edge doesn't have the same src and dest, we know its in the MST, so increase the total weight
 			totalWeight += p.weight;
 		}
 	}
 
-	cout << totalWeight << endl;
+	cout << totalWeight << endl; // Output the total weight
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
+		// Loop through the nodes array
 		edge& p = nodes[i];
 
 		if (p.dest != p.src)
 		{
+			// If our current edge doesn't have the same src and dest, we know its in the MST,
+			// so print it out nicely, i.e. "a-b: 1"
 			cout << nodeVertices[p.src] << "-" << nodeVertices[p.dest] << ": " << p.weight << endl;
 		}
 	}
 
-	delete[] nodes;
+	// delete nodes and heap as clean up
+	delete[] nodes; 
 	delete[] heap;
 }
 
