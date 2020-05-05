@@ -130,19 +130,21 @@ void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 
 void Kruskal::makeSet(const string& word)
 {
-	node* newNode = new node();
+	// Makes a set for the given word
+	node* newNode = new node(); // Start off by making a new node
 
-	newNode->word = word;
+	newNode->word = word;		// The word for the new node is the one we passed in
 
 	if (head == nullptr)
 	{
+		// If the head was null before, this must be our head so put it there and return
 		head = newNode;
 		return;
 	}
 
-	newNode->nextVertex = head;
+	newNode->nextVertex = head; // Otherwise, make the next vertex for this set be the current head
 
-	head = newNode;
+	head = newNode;				// and set this node to be the head
 }
 
 Kruskal::node* Kruskal::findSet(const string& word)
