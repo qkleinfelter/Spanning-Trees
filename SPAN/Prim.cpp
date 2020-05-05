@@ -141,31 +141,39 @@ void Prim::findMST(string* nodeVertices, double** weights, int numOfNodes)
 
 edge* Prim::extractMinNode()
 {
+	// Helper function to extract the minimum node from the min priority queue
 	if (heapsize < 1)
 	{
+		// If we try to extract with nothing in the heap, we have an underflow
 		cout << "Heap underflow" << endl;
 		return nullptr;
 	}
 
-	edge* min = heap[1];
-	heap[1] = heap[heapsize];
-	heapsize--;
-	minHeapify(1);
-	return min;
+	edge* min = heap[1]; // Grab the minimum node (heap[1] is the smallest because it is 1 based)
+	heap[1] = heap[heapsize]; // Move heap[heapsize] into heap[1]
+	heapsize--; // Drop the heapsize since we've pulled a node out
+	minHeapify(1); // And re run minheapify
+	return min; // before returning min
 }
 
 int Prim::left(int index)
 {
+	// A heap implemented in a 1 based array will have a nodes
+	// left child's index as 2 * the nodes index 
 	return 2 * index;
 }
 
 int Prim::right(int index)
 {
+	// A heap implemented in a 1 based array will have a nodes
+	// right child's index as 2 * the nodes index + 1
 	return (2 * index) + 1;
 }
 
 int Prim::parent(int index)
 {
+	// A heap implemented in a 1 based array will have a nodes
+	// parent's index as the nodes index / 2 
 	return index / 2;
 }
 
