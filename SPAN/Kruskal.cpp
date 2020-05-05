@@ -1,93 +1,129 @@
+/*
+	File: Kruskal.cpp - Implementation of Kruskal's algorithm to find a MST of a graph
+	c.f.: Kruskal.h
+
+	This class implements Kruskal's algorithm to find a minimum spanning
+	tree of a graph, using a shared edge struct, quicksort, and insertion sort
+
+	Author: Quinn Kleinfelter
+	Class: EECS 2510-001 Non Linear Data Structures Spring 2020
+	Instructor: Dr. Thomas
+	Last Edited: 5/5/20
+	Copyright: Copyright 2020 by Quinn Kleinfelter. All rights reserved.
+*/
+
+
 #include "Kruskal.h";
 #include <string>;
 #include <iostream>
 
 Kruskal::Kruskal()
 {
-
+	// Constructor, nothing really needed here as we handle
+	// most things at the beginning of findMST
 }
 
 Kruskal::~Kruskal()
 {
+	// Destructor, nothing really needed here as we handle
+	// most things at the end of findMST
 }
 
 void Kruskal::findMST(string* nodeVertices, double** adjMatrix, int numOfNodes)
 {
+	// Finds the minimum spanning tree using Kruskal's algorithm, 
+	// for the graph defined by the parameters
+
 	for (int i = 0; i < numOfNodes; i++)
 	{
+		// Create a set for each of the nodeVertices containing only itself
 		makeSet(nodeVertices[i]);
 	}
 
-	edge* edges = new edge[numOfNodes * numOfNodes];
-	int currEdge = 0;
+	edge* edges = new edge[numOfNodes * numOfNodes]; // Array of edges, theoretically could have numOfNodes^2 edges, so we need to make our array that big
+
+	int currEdge = 0;	// The edge we are working with
 
 	for (int i = 0; i < numOfNodes; i++)
 	{
 		for (int j = 0; j < numOfNodes; j++)
 		{
-			double currWeight = adjMatrix[i][j];
+			// Loop through the adjancecy matrix
+			double currWeight = adjMatrix[i][j]; // The current weight is the adjancecy matrix art the current location
 
 			if (currWeight != 0)
 			{
+				// If the weight is non-zero, we need an edge to represent it
 				edge p;
 
-				p.src = i;
-				p.dest = j;
+				p.src = i; // P starts at i
+				p.dest = j;// and ends at j
 
-				p.weight = currWeight;
+				p.weight = currWeight; // its weight is the value in the adjancecy matrix at i,j
 
-				edges[currEdge] = p;
+				edges[currEdge] = p; // Add the new edge into our edge array, at the currEdge spot
 
-				currEdge++;
+				currEdge++; // Increment currEdge once we're done working on it
 			}
 		}
 	}
 
-	// Sort the list of edges in increasing order by weight
+	// Sort the list of edges in increasing order by weight using quicksort
 	sortWeightAscending(edges, 0, currEdge);
 	
-	double totalWeight = 0;
+	double totalWeight = 0; // Double to keep track of the total weight
 
-	edge* mergedEdges = new edge[numOfNodes - 1];
-	int currMerge = 0;
+	edge* mergedEdges = new edge[numOfNodes - 1]; // Array of edges to keep track of the ones we use in our MST, it will always be 1 smaller than the number of nodes
+	int currMerge = 0; // Tracker for where we are currently at in mergedEdges
 
 	for (int i = 0; i < currEdge; i++)
 	{
-		edge& p = edges[i];
+		// Loop through the edges array
+		edge& p = edges[i]; // p is the current edge
 		
-		node* srcContainer = findSet(nodeVertices[p.src]);
-		node* destContainer = findSet(nodeVertices[p.dest]);
+		node* srcContainer = findSet(nodeVertices[p.src]);		// The set that our src is contained in
+		node* destContainer = findSet(nodeVertices[p.dest]);	// The set that our destination is contained in
 
 		if (srcContainer != destContainer)
 		{
-			setUnion(srcContainer, destContainer);
-			mergedEdges[currMerge] = p;
-			currMerge++;
-			totalWeight += p.weight;
+			// As long as the src and destination are in different sets, we include the edge
+			setUnion(srcContainer, destContainer); // So combine the two sets
+			mergedEdges[currMerge] = p;	// Add p to our list of merged edges
+			currMerge++;	// Increment the merge counter
+			totalWeight += p.weight;	// And add p's weight to the total weight
 		}
 	}
 
 
 	for (int i = 0; i < currMerge; i++)
 	{
-		edge& currEdge = mergedEdges[i];
+		// Here we are looping through the merged edges array
+		// to ensure that the edges are formatted correctly for our 
+		// alphabetical insertion sort. We always want the smaller
+		// lexicographical side to be the src, i.e. we want
+		// an edge that goes from a to b, instead of one from
+		// b to a
+		edge& currEdge = mergedEdges[i]; // Grab the current edge from merged edges
 
 		if (nodeVertices[currEdge.src] > nodeVertices[currEdge.dest])
 		{
-			int temp = currEdge.src;
-			currEdge.src = currEdge.dest;
-			currEdge.dest = temp;
+			// If the src is greater than the destination, swap them
+			int temp = currEdge.src;		// Temp variable to hold the source
+			currEdge.src = currEdge.dest;	// Change the source to the destination
+			currEdge.dest = temp;			// Change the destination to the temp holding the source
 		}
 	}
 
+	// Run insertion sort on the list of merged edges to make them display alphabetically
 	alphabeticalInsertionSort(mergedEdges, currMerge, nodeVertices);
 
-	delete[] edges;
+	delete[] edges; // We can delete the edges array here, since we're done with it
 
 
-	cout << totalWeight << endl;
+	cout << totalWeight << endl;		// Output the total weight of the MST
 	for (int i = 0; i < currMerge; i++)
 	{
+		// Loop through the merged edges array and print them out in the specified format, i.e. "a-b: 1"
 		cout << nodeVertices[mergedEdges[i].src] << "-" << nodeVertices[mergedEdges[i].dest] << ": " << mergedEdges[i].weight << endl;
 	}
 }
