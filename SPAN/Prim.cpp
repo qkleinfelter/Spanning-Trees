@@ -255,30 +255,37 @@ int Prim::findInQueue(edge* p)
 
 void Prim::alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[])
 {
+	// Sort the list of edges alphabetically, using insertion sort
 	int i, j;
 	edge key;
 	for (i = 1; i < numOfEdges; i++)
 	{
-		key = arr[i];
-		j = i - 1;
+		// Loop through the edges, starting at element 1
+		key = arr[i]; // the key becomes the element at i
+		j = i - 1; // and j, lags behind starting at i - 1
 
 		while (j >= 0 && !edgeAlphaCompare(arr[j], key, nodeVertices))
 		{
-			arr[j + 1] = arr[j];
-			j--;
+			// While j >= 0 and the edge at arr[j] is greater than the key, using our alphabetical comparison
+			arr[j + 1] = arr[j]; // move the item from the arr[j] into arr[j + 1]
+			j--; // and decrement j
 		}
-		arr[j + 1] = key;
+		arr[j + 1] = key; // Then, make arr[j + 1] the key
 	}
 }
 
 bool Prim::edgeAlphaCompare(edge& edge1, edge& edge2, string nodeVertices[])
 {
+	// Boolean method that determines the order of the 2 edges alphabetically
 	if (nodeVertices[edge1.src] == nodeVertices[edge2.src])
 	{
+		// If the src of both edges is the same, compare the destinations, returning true if
+		// edge1 is less than edge2
 		return nodeVertices[edge1.dest] < nodeVertices[edge2.dest];
 	}
 	else
 	{
+		// Otherwise, we can do our comparison on the src, returning true if edgge1 is less than edge2
 		return nodeVertices[edge1.src] < nodeVertices[edge2.src];
 	}
 }
