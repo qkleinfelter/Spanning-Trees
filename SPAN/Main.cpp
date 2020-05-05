@@ -68,6 +68,7 @@ void readGraphFile(string graphPath)
 	}
 
 	Kruskal* kruskal = new Kruskal();
+	cout << "Kruskals:" << endl;
 	
 	kruskal->findMST(nodeVertices, adjMatrix, numOfNodes);
 
@@ -76,6 +77,7 @@ void readGraphFile(string graphPath)
 	cout << "---------------------------" << endl;
 
 	Prim* prim = new Prim();
+	cout << "Prims:" << endl;
 
 	prim->findMST(nodeVertices, adjMatrix, numOfNodes);
 

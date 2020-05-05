@@ -182,7 +182,7 @@ int Kruskal::partitionWeightAscending(edge arr[], int p, int r)
 	edge x = arr[p];
 	do
 	{
-		do i++; while (arr[i].weight < x.weight);
+		do i++; while (i < j && arr[i].weight < x.weight);
 		do j--; while (arr[j].weight > x.weight);
 		if (i < j)
 		{
