@@ -179,47 +179,62 @@ int Prim::parent(int index)
 
 void Prim::decreaseKey(int index, double key)
 {
-	edge* p = heap[index];
+	// Decreases the node at index's weight to be key, and adjusts its
+	// position in the heap accordingly
+
+	edge* p = heap[index]; // Grab the edge at the index
+
 	if (key > p->weight)
 	{
+		// If we are trying to make it's weight larger, we want to error out
 		cout << "New key value is greater than current key value" << endl;
 		return;
 	}
 
-	p->weight = key;
+	p->weight = key; // Set its weight to the key
 
 	while (index > 1 && heap[parent(index)]->weight > heap[index]->weight)
 	{
-		edge* temp = heap[index];
+		// Loop through while the index is > 1 and the parent's weight is greater than the current indexes weight
+
+		// Swap heap[index] and heap[parent(index)]
+		edge* temp = heap[index]; 
 		heap[index] = heap[parent(index)];
 		heap[parent(index)] = temp;
-		index = parent(index);
+		index = parent(index); // And move index to its parent
 	}
 }
 
 
 void Prim::minHeapify(int index)
 {
-	int l = left(index);
+	// Helper method to ensure we have a min heap at a given index
+	int l = left(index); // Keep track of the left and right indexes
 	int r = right(index);
-	int smallest;
+	int smallest; // An int to hold the smallest's index
 
 	if (l <= heapsize && heap[l]->weight < heap[index]->weight)
 	{
+		// If l is within the heap, and the weight of the node at the position is less than that at the index
+		// make the smallest l
 		smallest = l;
 	}
 	else
 	{
+		// Otherwise, make it index
 		smallest = index;
 	}
 
 	if (r <= heapsize && heap[r]->weight < heap[smallest]->weight)
 	{
+		// If r is within the heap, and the weight of the node at the position is less than that at the smallest
+		// make the smallest r
 		smallest = r;
 	}
 
 	if (smallest != index)
 	{
+		// If the smallest isn't at index, swap heap[index] and heap[smallest]
 		edge* temp = heap[index];
 		heap[index] = heap[smallest];
 		heap[smallest] = temp;
@@ -229,12 +244,13 @@ void Prim::minHeapify(int index)
 
 int Prim::findInQueue(edge* p)
 {
+	// Loop through the min priority queue finding where p exists in it, if at all
 	for (int i = 1; i <= heapsize; i++)
 	{
-		if (heap[i] == p) return i;
+		if (heap[i] == p) return i; // If the current position in the heap is p, return i
 	}
 
-	return 0;
+	return 0; // If we get here, its not in the queue so return 0
 }
 
 void Prim::alphabeticalInsertionSort(edge arr[], int numOfEdges, string nodeVertices[])
